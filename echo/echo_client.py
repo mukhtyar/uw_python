@@ -23,7 +23,8 @@ if nargs > 2:
 s = socket.socket(socket.AF_INET, 
                   socket.SOCK_STREAM) 
 s.connect((host,port)) 
-s.send('Hello, world') 
+echo_str = raw_input("Enter string:")
+s.send(echo_str) 
 data = s.recv(size) 
 s.close() 
 print 'from (%s,%s) %s' % (host, port, data)
