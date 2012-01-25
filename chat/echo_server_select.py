@@ -53,11 +53,11 @@ while running:
             input.append(client)
             print 'accepted connection from', address
 
-#        elif s == sys.stdin:
-#            # handle standard input
-#            junk = sys.stdin.readline()
-#            running = False
-#            print 'Input %s from stdin, exiting.' % junk.strip('\n')
+       elif s == sys.stdin:
+           # handle standard input
+           junk = sys.stdin.readline()
+           running = False
+           print 'Input %s from stdin, exiting.' % junk.strip('\n')
 
         elif s: # client socket
             data = s.recv(size)
