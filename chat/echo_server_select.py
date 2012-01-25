@@ -53,7 +53,7 @@ while running:
             input.append(client)
             print 'accepted connection from', address
 
-       elif s == sys.stdin:
+        elif s == sys.stdin:
             # handle standard input
             junk = sys.stdin.readline()
             running = False
