@@ -1,20 +1,19 @@
 """
-recho client, usage:
+chat client, usage:
 
- python recho_client.py <host> <port>
+ python chat_client.py <host> <port>
 
-Both host and port are optional, defaults: localhost 50000
+Both host and port are optional, defaults: localhost 50005
 host must be present if you want to provide port
 
-Prompt user for each message to send
-Repeat sending messages until user enters empty string
 """
 
-import socket 
+import select
+import socket
 import sys
 
 host = 'localhost' 
-port = 50002 # different default port than echo, both can run on same server
+port = 50005 # different default port than echo, both can run on same server
 size = 1024 
 
 nargs = len(sys.argv)
@@ -27,13 +26,31 @@ s = socket.socket(socket.AF_INET,
                   socket.SOCK_STREAM) 
 s.connect((host,port)) 
 print 'Connection accepted by (%s,%s)' % (host, port)
-while True:
-    msg = raw_input('> ')
-    if msg:         # msg is not empty
-        s.send(msg) 
-        data = s.recv(size)
-        print data
-    else:          # msg is empty
-        s.close() 
-        break      # exit loop            
 
+input = [s,sys.stdin]
+running = True
+
+while running:
+    sys.stdout.write('>')
+    sys.stdout.flush()
+    
+    inputready,outputready,exceptready = select.select(input,[],[])
+    
+    for i in inputready:
+        if i == sys.stdin:
+            msg = sys.stdin.readline().strip()
+            if msg:
+                i.send(msg)
+            else:
+                i.close()
+                break
+        
+        elif i == s:
+            data = i.recv(size)
+            if not data:
+                print 'chat closed'
+                running = False
+                break
+            else:
+                sys.stdout.write(data + '\n')
+                sys.stdout.flush()

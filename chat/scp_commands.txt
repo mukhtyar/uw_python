@@ -1,0 +1,3 @@
+c:\Program Files (x86)\PuTTY>pscp -l class C:\Users\shrutim\uw_python\chat\chat_client.py block335030-p73.blueboxgrid.com:/home/class/uw_python/chat
+
+c:\Program Files (x86)\PuTTY>pscp -l class C:\Users\shrutim\uw_python\chat\chat_server.py block335030-p73.blueboxgrid.com:/home/class/uw_python/chat
