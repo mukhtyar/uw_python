@@ -11,6 +11,8 @@ host must be present if you want to provide port
 import select
 import socket
 import sys
+import time
+import datetime
 
 host = 'localhost' 
 port = 50005 # different default port than echo, both can run on same server
@@ -22,35 +24,40 @@ if nargs > 1:
 if nargs > 2:
     port = int(sys.argv[2])
 
-s = socket.socket(socket.AF_INET, 
+server = socket.socket(socket.AF_INET, 
                   socket.SOCK_STREAM) 
-s.connect((host,port)) 
+server.connect((host,port)) 
 print 'Connection accepted by (%s,%s)' % (host, port)
+#sys.stdout.write('> ')
+#sys.stdout.flush() # force print of line without \n
 
-input = [s,sys.stdin]
+timeout = 60 #seconds
+input = [server,sys.stdin]
 running = True
 
 while running:
     sys.stdout.write('>')
     sys.stdout.flush()
     
-    inputready,outputready,exceptready = select.select(input,[],[])
+    inputready,outputready,exceptready = select.select(input,[],[],timeout)
     
-    for i in inputready:
-        if i == sys.stdin:
-            msg = sys.stdin.readline().strip()
-            if msg:
-                i.send(msg)
-            else:
-                i.close()
-                break
+    # timeout
+    if not inputready:  
+        # could do periodic housekeeping here
+        print 'chat client running at %s' % datetime.datetime.now()
+    
+    for s in inputready:
         
-        elif i == s:
-            data = i.recv(size)
-            if not data:
-                print 'chat closed'
-                running = False
-                break
+        if s == sys.stdin:
+            #handle standard input
+            msg = sys.stdin.readline().strip('\n')
+            if msg:
+                server.send(msg)
             else:
-                sys.stdout.write(data + '\n')
-                sys.stdout.flush()
+                server.close()
+                running = False
+        
+        elif s:
+            data = server.recv(size)
+            sys.stdout.write(data + '\n')
+            sys.stdout.flush()

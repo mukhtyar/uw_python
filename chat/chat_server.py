@@ -14,6 +14,7 @@ import socket
 import sys
 import time
 import datetime
+    
 
 host = ''
 port = 50005 # different port than other samples, all can run on same server
@@ -32,19 +33,18 @@ server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 server.bind((host,port))
 
-print 'echo_server listening on port %s, to exit type return ' % port
+print 'chat server listening on port %s, to exit type return ' % port
 server.listen(backlog)
 
-timeout = 10 # seconds
+timeout = 60 # seconds
 input = [server,sys.stdin]
-output = []
 running = True
 while running:
-    inputready,outputready,exceptready = select.select(input,output,[],timeout)
+    inputready,outputready,exceptready = select.select(input,[],[],timeout)
 
     # timeout
     if not inputready:  
-        print 'Server running at %s' % datetime.datetime.now()
+        print 'chat erver running at %s' % datetime.datetime.now()
 
     for s in inputready:
 
@@ -54,35 +54,25 @@ while running:
             input.append(client)
             print 'accepted connection from ', address
             
-            msg = '\n%s has joined the chatroom ' % str(address[0])
-            for o in output:
-                send(o,msg)
-            
-            output.append[client]
-            
         elif s == sys.stdin:
             # handle standard input
             junk = sys.stdin.readline()
             running = False
             print 'Input %s from stdin, exiting.' % junk.strip('\n')
 
-        elif s:
+        elif s:# client socket
             data = s.recv(size)
-            print '%s: %s' % (s.getpeername(), data.strip('\n'))
+            print '%s: %s' % (s.getpeername(), data)
             if data:
-                msg = '%s: %s' % s.getpeername(), data
-                for o in output:
-                    if o != s:
-                        o.send(msg)
+                msg = '%s: %s' % (s.getpeername(), data)
+                for i in input:
+                    if i != server and i != sys.stdin and i != s:
+                        i.send(msg)
             else:
                 s.close()
-                print 'closed connection from ', s.getpeername()
+                print 'closed connection'
                 input.remove(s)
-                output.remove(s)
-                
-                msg = '\n%s has left the chatroom ' % s.getpeername()
-                for o in output:
-                    send(o,msg) 
+
 
 s.close()
 
