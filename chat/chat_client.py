@@ -27,7 +27,7 @@ if nargs > 2:
 server = socket.socket(socket.AF_INET, 
                   socket.SOCK_STREAM) 
 server.connect((host,port)) 
-print 'Connection accepted by (%s,%s)' % (host, port)
+print 'Connection accepted by chat server (%s,%s)' % (host, port)
 #sys.stdout.write('> ')
 #sys.stdout.flush() # force print of line without \n
 
