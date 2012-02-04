@@ -61,16 +61,17 @@ while running:
             print 'Input %s from stdin, exiting.' % junk.strip('\n')
 
         elif s:# client socket
+            clientid = s.getpeername()
             data = s.recv(size)
-            print '%s: %s' % (s.getpeername(), data)
+            print '%s: %s' % (clientid, data)
             if data:
-                msg = '%s: %s' % (s.getpeername(), data)
+                msg = '%s: %s' % (clientid, data)
                 for i in input:
                     if i != server and i != sys.stdin and i != s:
                         i.send(msg)
             else:
                 s.close()
-                print 'closed connection'
+                print '%s closed connection', % clientid
                 input.remove(s)
 
 
