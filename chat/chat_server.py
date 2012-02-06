@@ -71,7 +71,7 @@ while running:
                         i.send(msg)
             else:
                 s.close()
-                print '%s closed connection', % clientid
+                print '%s closed connection' % (clientid)
                 input.remove(s)
 
 
