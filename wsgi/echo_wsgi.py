@@ -46,9 +46,10 @@ notfound_template = """
 </body>
 </html>
 """
-
+msg_history = []
 # must be named 'application' to work with our wsgi simple server
 def application(environ, start_response): 
+    global msg_history
     status = '200 OK'
     response_headers = [('Content_type', 'text/HTML')]
     start_response(status, response_headers)
@@ -58,8 +59,9 @@ def application(environ, start_response):
         page = form_page
     elif path == '/echo_wsgi.py':
         # get message from URL query string, parse_qs returns a list for each key
-        page = message_template % (
-            urlparse.parse_qs(environ['QUERY_STRING'])['message'][0])
+        message = urlparse.parse_qs(environ['QUERY_STRING'])['message'][0]
+        msg_history.append(message)
+        page = message_template % (message + '<br>Previous messages - ' + ' ,'.join(str(x) for x in msg_history[:-1]))
     else:
         page = notfound_template % path
     return [ page ] # list of strings - must return iterable, not just a string
