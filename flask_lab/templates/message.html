@@ -1,0 +1,15 @@
+<head>
+<!doctype html>
+</head>
+<body>
+<title>Message</title>
+{% if msg %}
+    <h1>Message: {{ msg[0] }} </h1><br />
+  {% for s in msg[1:] %}
+    <h1>Previous Message: {{ s }} </h1><br />
+  {% endfor %}
+{% else %}
+  <h1>No messages</h1>
+{% endif %}
+</body>
+</html>
