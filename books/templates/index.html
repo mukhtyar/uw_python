@@ -1,0 +1,16 @@
+<head>
+<title>List of Books Titles</title>
+</head>
+<body>
+<h1>List of Books</h2>
+{% if book_titles %}
+    {% block body %}
+    <ul>
+    {% for title in book_titles %}
+        <li><a href="get_detail.py?id={{ title.id }}">{{ title.title }}</a></li>
+    {% endfor %}
+    </ul>
+    {% endblock %}
+{% endif %}
+</body>
+</html>

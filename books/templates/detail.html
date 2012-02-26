@@ -1,0 +1,19 @@
+<!--  This template is really just a static HTML page -->
+<head>
+<title>Book Detail</title>
+</head>
+<body>
+<h1>Book Detail</h2>
+{% if book_info %}
+    <table border="1" cellpadding="5">
+        <tr>
+        {% for key in book_info %}
+            <td>{{ key }}</td>
+            <td>{{ book_info[key] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+</body>
+</html>
+
