@@ -1,5 +1,6 @@
 """
-Import bookdb.py and create a 
+Adds records to the bookdb.db sqlite3 database with data
+from the database dictionary from Brain Dorsey's bookdb.py
 """
 import sqlite3
 import bookdb
