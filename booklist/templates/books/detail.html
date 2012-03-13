@@ -1,7 +1,5 @@
-<head>
-<title>Book Detail View</title>
-</head>
-<body> 
+{% extends "books/base.html" %}
+{% block content %}
 {% if book.title %}
 <h1>{{ book.title }}</h1>
     <table border="1" cellpadding="5">
@@ -13,6 +11,4 @@
         {% endfor %}
     </table>
 {% endif %}
-
-</body>
-</html>
+{% endblock %}

@@ -1,7 +1,5 @@
-<head>
-<title>List of Books</title>
-</head>
-<body>
+{% extends "books/base.html" %}
+{% block content %}
 {% if book_list %}
     <ul>
     {% for book in book_list %}
@@ -11,7 +9,4 @@
 {% else %}
     <p>No books are available.</p>
 {% endif %}
-
-
-</body>
-</html>
+{% endblock %}
